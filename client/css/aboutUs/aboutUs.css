@@ -1,0 +1,103 @@
+*{margin:0;padding:0;list-style:none}
+#AboutUs{
+    width: 1000px;height:1500px;
+    min-height: 500px;
+    margin: 0 auto;
+    overflow:hidden;
+
+    background:-moz-linear-gradient(#E1A1A1,#fff);
+    background:-webkit-gradient(linear,center top,center bottom,from(#E1A1A1),to(#fff));
+    background:-webkit-linear-gradient(#E1A1A1,#fff);
+    background:-o-linear-gradient(#E1A1A1,#fff);
+    background:-ms-linear-gradient(#E1A1A1,#fff);
+    background:linear-gradient(#E1A1A1,#fff);
+    
+    -webkit-user-select:none;
+    -moz-user-select:none;
+    -ms-user-select:none;
+    user-select:none;  
+}
+#text{
+    width: 900px;min-height:300px;
+    margin: 20px auto;
+    overflow: hidden;
+}
+#text .tag li{
+    text-align: center;
+    line-height: 50px;
+}
+#text .tag li:first-child{
+    font: bold 40px "微软雅黑";
+    color: #C50B0C;
+    margin-top: 50px;
+}
+#text>ul{
+    /*padding-left: 200px;*/
+}
+#div1{  
+    width: 900px;height:auto;
+    margin: 20px auto;
+    overflow: hidden;
+}
+#div1 .active {
+    background: #C50B0C;
+    color: white;
+}
+#div1 input{
+    float: left;
+    width:450px;height:100px;
+    font: 25px "微软雅黑";
+    font-weight: 900;
+    text-align: center;
+    margin: 0 auto;
+    background-color: #f3efef;
+    transition: 1s;   
+}
+#div1 input:hover{
+    background:-webkit-linear-gradient(#8B3131, #fff);
+    background:-o-linear-gradient(#8B3131, #fff);
+    background:linear-gradient(#8B3131, #fff);
+    cursor: pointer;
+    font-size: 3em; 
+}
+#div1 span{
+    width: 900px;
+    height: 500px;
+    background: url('../../images/aboutUs_banner.jpg');
+    background-size:100% 100%;
+    display: block;
+    margin-top: 100px;
+}
+#div1 div {
+    width: 900px;
+    height: 600px;
+}
+#div1 div ul{
+    text-align: center;
+    font-size: 2em;
+    font-weight: 800px;
+    color: #ACA1A1;
+    margin-top:100px;
+    overflow:hidden;
+}
+#div1 div ul li{
+    font: 15px "微软雅黑";
+    color: #000000;
+}
+#div1 .int1{
+    margin-top:100px;
+}
+#div1 .team{
+    font-size: 25px;
+    margin-top: 40px;
+    margin-bottom: 40px;
+    color: #000000;
+}
+#div1 .int2{
+    text-align: left;
+}
+#div1 .int2>li{
+    line-height: 30px;
+}
+
+

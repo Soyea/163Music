@@ -1,0 +1,29 @@
+/*grid样式*/
+	.table>table{
+		width: 730px;
+		border-collapse:collapse;
+		padding-left: 37px;
+	}
+	.table>table th,tr,td{
+		text-align:left;
+		padding:10px 25px;
+	}
+	.table>table tbody tr:nth-child(even){
+		background-color: #f5f5f7;
+	}
+	.table>table tbody tr:nth-child(odd){
+		background-color: #fafafa;
+	}
+	.table>table thead tr{
+		background: rgba(234,153,153,0.5);
+	}
+	.table>table>tbody>tr>td>a>img{
+		width:20px;height:24px;
+	}
+	.table>table>tbody>tr:hover{
+		cursor: pointer;
+		background: rgba(234,153,153,0.2);
+	}
+	.table>table>tbody>tr>td:first-child{
+		/*padding-left: 27px;*/
+	}

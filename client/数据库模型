@@ -1,0 +1,157 @@
+// 数据库模型
+// 	表 users
+// 	保存每个用户信息，
+// 	每个用户在注册的时候有如下信息
+// {username:'',password:'',sex:'',telnumber:'',isAgree:'',musicList:[{name:'default',listImg:'images/Dyh/defaultListLogo.png',listlist:[]}],radios:[]}
+// 		username: 用户名 
+// 		password: 用户密码
+// 		sex: 用户性别
+// 		telnumber 手机号
+// 		isAgree 记录是否同意协议
+// 		musicList 数组形式记录用户所有歌单，每个歌单为一个对象，name表示歌单的名字，list存放歌曲的id
+// 		radios 数组形式记录用户所有的电台id
+	
+// 	表 musics
+// 	保存所有的音乐信息
+// 	每条音乐有如下信息
+// 		{id:'001',name:'我是歌曲名',singer:'歌手名',type:'类型',language:'语种',time:'歌曲时长',creatYear:''},
+// 		id：歌曲id，每条歌曲id唯一 
+// 		name: 歌曲名字
+// 		singer 此歌曲的歌手名字
+// 		type 此歌曲类型
+// 		language 歌曲语种
+// 		time 歌曲时长 单位秒
+
+
+
+// 	表 radios
+// 	保存所有的电台信息
+// 	每个电台有如信息
+// 		{id:'001',name:'我的电台名1',author:'作者名',totalNum:'210',type:'商业财经',imgUrl:''},
+// 		id：电台id，电台id唯一 
+// 		name: 电台名字
+// 		author 此电台的作者名
+// 		totalPeriod 电台总期数
+// 		type 此电台类型
+//		imgUrl 此电台图片
+
+//  表musicRankList
+// 	musicRankList
+// 	保存所有榜单信息
+// 	每个榜单有如下信息
+// 	{name:'newList',playtimes:11021234,,list:[]}
+// 	name: 榜单名字
+// 	list: 保存此榜单中的歌曲id
+// 	Ps:目前有8个榜单：
+// 		  newList => 新歌排行榜
+// 		  upfastList => 飙升排行榜
+// 		  originalList =>原创排行榜
+// 		  hottestList => 热歌排行榜
+// 		  TWHitoList => 台湾Hito排行榜
+// 		  BeatPortList => Beatport全球电子舞曲榜
+// 		  NRJVosHitsList => 法国 NRJ Vos Hits周榜
+// 		  HitFMTopList => Hit FM Top榜
+
+
+
+
+// 插入榜单
+var temp={
+	name:'BeatPortList',
+	playtimes:Math.floor(Math.random()*5000000).toString(),
+	list:[]
+};
+for(var i=0;i<50;i++){
+	var obj={id:("000"+Math.ceil(Math.random()*499)).slice(-4)}
+	temp.list.push(obj);
+}
+db.musicRankList.insert(temp);
+
+db.musicRankList.remove({name:'BeatPortList'});
+
+
+
+
+
+// 插入首音乐
+
+// var sxing=['赵','钱','孙','李','王','吴','张','徐','师','余'];
+// var sming=['一','二','三','四','五','六','七','八','九','十一'];
+// var mxing=['六月的','初夏的','凛冬的','狮子座的','期待','发现','一千年以后的','眼前的','仰望','预谋','没有','光辉的','曾经的'];
+// var mming=['爱','浪漫','爱情','希望','梦','雨','笑声','梦华','心','晚安','回忆','ing','岁月'];
+// var type=['pop','classic','rap','hipop','folk','blue','mood','rock'];
+// var language=['chinese','english','cantonese','french'];
+
+// function getTime(){
+// 	var num=0;
+// 	do{num=Math.floor(Math.random()*380);}
+// 		while(num<160)
+// 	return num
+// }
+// for(var i=1;i<=500;i++){
+// 	var obj={
+// 		id:('000'+i).slice(-4),
+// 		name: mxing[Math.floor(Math.random()*13)]+mming[Math.floor(Math.random()*13)],
+// 		singer:sxing[Math.floor(Math.random()*10)]+sming[Math.floor(Math.random()*10)],
+// 		type:type[Math.floor(Math.random()*8)],
+// 		language:language[Math.floor(Math.random()*4)],
+// 		time: getTime(),
+// 		creatYear:['2014','2015','2016','2017'][Math.floor(Math.random()*4)],
+// 	};
+// 	db.musics.insert(obj);
+// }
+// var obj={id:'0000',name:'类似爱情',singer:'不记得',type:'pop',language:'chinese',time:'160',creatYear:'2015'}
+// db.musics.insert(obj)
+// 插入电台
+// var arr=[
+// 	{imgUrl:'images/radios/radiosImg (1).jpg',title:"见信如唔",author:"见信如唔的小江心",total:"3267"},
+// 	{imgUrl:'images/radios/radiosImg (2).jpg',title:"民谣在路上Folk",author:"民谣在路上onethefolk",total:"91697"},
+// 	{imgUrl:'images/radios/radiosImg (3).jpg',title:"文茜的异想世界",author:"文茜大姐大",total:"4130"},
+// 	{imgUrl:'images/radios/radiosImg (4).jpg',title:"张昕的一星期",author:"SNH48-张昕",total:"4585"},
+// 	{imgUrl:'images/radios/radiosImg (5).jpg',title:"低速公路",author:"话不多电台",total:"1092"},
+// 	{imgUrl:'images/radios/radiosImg (6).jpg',title:"山水齐保丁",author:"汪洋酱",total:"1065"},
+// 	{imgUrl:'images/radios/radiosImg (7).jpg',title:"Big Chilli欧美",author:"Simonomg",total:"2209"},
+// 	{imgUrl:'images/radios/radiosImg (8).jpg',title:"嗨,早上好",author:"豆花妹子",total:"3251"},
+// 	{imgUrl:'images/radios/radiosImg (9).jpg',title:"LQ李茜电台",author:"LQ李茜",total:"3768"},
+// 	{imgUrl:'images/radios/radiosImg (10).jpg',title:"大自然的声音",author:"草帽biu",total:"848"},
+// 	{imgUrl:'images/radios/radiosImg (11).jpg',title:'万物起源',author:'乐乐乐乐乐乐正',total:'14'},
+// 	{imgUrl:'images/radios/radiosImg (12).jpg',title:'科学史评话',author:'吴京平',total:'159'},
+// 	{imgUrl:'images/radios/radiosImg (13).jpg',title:'原来是这样',author:'旭岽叨科学',total:'193'},
+// 	{imgUrl:'images/radios/radiosImg (14).jpg',title:'星源星语',author:'星言星语电台',total:'180'},
+// 	{imgUrl:'images/radios/radiosImg (15).jpg',title:'老罗锤子FM',author:'锤子科技FM',total:'233'},
+// 	{imgUrl:'images/radios/radiosImg (16).jpg',title:'未来简史',author:'两年之约ing',total:'69'},
+// 	{imgUrl:'images/radios/radiosImg (17).jpg',title:'纽约文化沙龙',author:'纽约文化沙龙',total:'109'},
+// 	{imgUrl:'images/radios/radiosImg (18).jpg',title:'设计蛋白粉',author:'设计药电',total:'34'},
+// 	{imgUrl:'images/radios/radiosImg (19).jpg',title:'软件那些事儿',author:'一个脱离了高级趣味的人',total:'121'},
+// 	{imgUrl:'images/radios/radiosImg (20).jpg',title:'极光日报',author:'Doge园长',total:'42'},
+// 	{imgUrl:'images/radios/radiosImg (21).jpg',title:"打上王者",author:"浪浪是个帅哥",total:"432"},
+// 	{imgUrl:'images/radios/radiosImg (22).jpg',title:"零度带你飞",author:"mosedy",total:"867"},
+// 	{imgUrl:'images/radios/radiosImg (23).jpg',title:"只有神拳.李青才能进的歌单",author:"爱上皮卡丘的文哥",total:"2894"},
+// 	{imgUrl:'images/radios/radiosImg (24).jpg',title:"先找对曲子 在去秀操作",author:"第七人称i",total:"1462"},
+// 	{imgUrl:'images/radios/radiosImg (25).jpg',title:"AJonnyCool的LOL电音铺",author:"Cool大魔王丶",total:"1844"},
+// 	{imgUrl:'images/radios/radiosImg (26).jpg',title:"百首丶必胜&超燃BGM纯音乐 欧美",author:"挫折和离别不过是生命中的点缀",total:"1374"},
+// 	{imgUrl:'images/radios/radiosImg (27).jpg',title:"英雄联盟台词版，纯台词！",author:"无鞘之剑__亚索",total:"7521"},
+// 	{imgUrl:'images/radios/radiosImg (28).jpg',title:"lol登录界面BGM.拳头公司:用心做音乐",author:"橙子的节操",total:"3739"},
+// 	{imgUrl:'images/radios/radiosImg (29).jpg',title:"League of Legends 原声碟",author:"斐谣",total:"4636"},
+// 	{imgUrl:'images/radios/radiosImg (30).jpg',title:"英雄联盟原声集 (送给那些燃烧的岁月)",author:"生而陌路-",total:"2549"},
+// 	{imgUrl:'images/radios/radiosImg (31).jpg',title:"打电竞时候听的歌",author:"崩坏Sovietsy",total:"489"},
+// 	{imgUrl:'images/radios/radiosImg (32).jpg',title:"「运动歌单」-听歌燃脂绝佳伴侣",author:"其实我很厉害的-_-",total:"6694"},
+// 	{imgUrl:'images/radios/radiosImg (33).jpg',title:"自由与信仰 | 音乐是我们的解药",author:"如花一般绽放丶",total:"28629"},
+// 	{imgUrl:'images/radios/radiosImg (34).jpg',title:"力量金属 2017",author:"最世纪末",total:"1517"},
+// 	{imgUrl:'images/radios/radiosImg (35).jpg',title:"抖腿EA7",author:"Sister杜蕾丝",total:"715"},
+// 	{imgUrl:'images/radios/radiosImg (36).jpg',title:"哈雷骑行专用",author:"Live_to_Ride",total:"103"},
+// 	{imgUrl:'images/radios/radiosImg (37).jpg',title:"【纯音?电吉他】点燃激情 瞬间爆炸",author:"爱听音乐的猫大叔",total:"6616"},
+// 	{imgUrl:'images/radios/radiosImg (38).jpg',title:"一听就会跳起来",author:"网红姐姐-",total:"704"},
+// 	{imgUrl:'images/radios/radiosImg (39).jpg',title:"摇滚火花° 美妙的合作",author:"玛丽锁链是耶稣",total:"12360"},
+// 	{imgUrl:'images/radios/radiosImg (40).jpg',title:"【柔情金属】硬汉们的似水柔情，无尽悲伤",author:"夕阳下的盛宴",total:"94127"},
+// ]
+// for(var i=0;i<arr.length;i++){
+// 	arr[i].id='2017'+(('000'+i).slice(-4)),
+// 	db.radios.insert(arr[i])
+// }
+
+// db.radios.find().forEach(function(x){
+// 	db.radios.update({id:x.id},{$set:{type:['有声读物','知识技能','明星做主播','人文历史','商业财经'][Math.floor(Math.random()*5)]}},true,false);
+// })
+
+db.users.update({username:'jeodeng'},{$set:{name:'覆水难收',area:{province:'江西省',city:'南昌市'}}},true,false)

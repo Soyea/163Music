@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>我的音乐</title>
+	<link rel="icon" href="images/Dyh/title.png" type="img/x-icon">
+	<!-- 重置样式表 -->
+	<link rel="stylesheet" type="text/css" href="css/myMusic/reset.css">
+	<!-- 此处引用本页面样式表-->
+	<link rel="stylesheet" href="css/myMusic/htmlmainbody.css">
+	<link rel="stylesheet" href="css/myMusic/grid.css">
+	<link rel="stylesheet" type="text/css" href="css/myMusic/nologin.css">
+	<!-- 共用组件样式表 -->
+	<link rel="stylesheet" type="text/css" href="css/myMusic/htmlhead.css">
+	<link rel="stylesheet" type="text/css" href="css/public/backTopBtn.css">
+	<!-- 引入cookie工具函数和vue全家桶 -->
+	<script type="text/javascript" src="js/cookieUtil.js"></script>
+	<script type="text/javascript" src='js/vue.js'></script>
+	<script type="text/javascript" src='js/vuex.js'></script>
+	<script type="text/javascript" src='js/vue-resource.js'></script>
+	<!-- 本页面组件 -->
+	<script src="components/myMusic/htmlmainbody.js"></script>
+	<script src="components/myMusic/grid.js"></script>
+	<!-- 共用全局组件 -->
+	<script type="text/javascript" src="components/public/htmlfooter.js"></script>
+	<script type="text/javascript" src="components/public/htmlhead.js"></script>
+	<script type="text/javascript" src="components/public/backTopBtn.js"></script>
+</head>
+<body>
+	<div id="app">
+		<htmlhead :curhtml="curhtml" @login-change="getLoginFlag" @menu-change="getCurMenu"></htmlhead>
+		<div v-if="curMainMenu==2&&!loginFlag" class="noLogin_bg">
+			<div class="mid_content">
+				<div class="left">
+				
+				</div>
+				<div class="right">
+					<h1>登录云音乐</h1>
+					<p>查看并管理你的音乐,<br/>方便随时收听</p>
+					<img src="images/login_zzz.jpg" alt="">
+					<button @click="LoginIn">立即登录</button>
+				</div>
+			</div>
+		</div>
+		<htmlmainbody v-if="curMainMenu==2&&loginFlag"></htmlmainbody>
+		<backtop></backtop>
+	</div>
+</body>
+	<!-- head组件模板 -->
+	<template id="htm_head">
+		<div class="html_head">
+			<div class="head_content">
+				<a hidefocus="true" href="index.html"><img :src="logoUrl" alt="Logo"></a>
+				<ul class="head_mainMenu">
+					<li v-for="(title,index) in mainMenu" :class="{active:index==curMainMenu}" @click="mainMenuTab(index)">
+						<a v-text="title.name" hidefocus="true" href="#" onclick="return false"></a>
+					</li>
+				</ul>
+				<div>
+					<input type="text" name="" placeholder="请输入搜索内容">
+					<strong @mouseover="loginInShow=!loginInShow" @mouseout="loginInShow=!loginInShow">
+						<a hidefocus="true" href="loginIn.html" v-show="!attitudeFlag" v-text="attitudeMsg.noFlag.msg"></a>
+						<a hidefocus="true" href="users.html" v-show="attitudeFlag" v-text="attitudeMsg.isFlag.msg"></a>
+					<ul v-show="loginInShow">
+						<li><a hidefocus="true" href="signUp.html">注册用户</a></li>
+						<li v-show="attitudeFlag"><a hidefocus="true" href="" @click="loginOut">退出登录</a></li>
+
+					</ul>
+					</strong>
+				</div>
+			</div>
+			<div class="head_bottom" v-show="curMainMenu==0">
+				<div class="head_subMenu">
+					<ul>
+						<li v-for="(title,index) in subMenu">
+							<a hidefocus="true" href="#" v-text="title.name" :class="{active:index==curSubMenu}" @click="subMenuTab(index)" onclick="return false"></a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</template>
+	<!-- footer组件模板 -->
+	<template id="htm_footer">
+		<div class="htm_footer">
+			<div class="footer_content">
+				<h2>
+					<a v-for="aText in footA" href="#" v-text="aText"></a>
+				</h2>
+				<h3 v-text="footContent"></h3>
+			</div>
+		</div>
+	</template>
+	<!-- backTop回到顶部模板 -->
+	<template id="back_TopBtn">
+		<a v-show="isShow" class="back_TopBtn" hidefocus="true" href="#" hidefocus="true" title="回到顶部"></a>
+	</template>
+
+<!-- mainbody组件模板 -->
+<template id="htm_mainbody">
+	<div class="mainbody_content">
+		<div class="main_left">
+			<div class="left_list">
+				<h3 v-text="leftH"></h3>
+				<ul>
+					<li v-for="list in allData" @click="changeList(list.name)">
+						<div class="listLogo">
+							<img :src="list.listImg" alt="">
+						</div> 
+						<div class="listP">
+							<p>{{filterPro(list.name)}}</p>
+							<p v-text="pSmall"></p>
+						</div>							
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div class="main_right">
+			<div class="right_top">
+				<div class="f_left">
+					<img src="images/Dyh/heart.png" alt="我喜欢的音乐">
+				</div>
+				<div class="f_right">
+					<img src="images/Dyh/rightListlogo.png" alt="歌单">
+					<span>{{filterPro(span)}}</span>
+					<div v-text="userName" class="userName"></div>
+					<p>
+						<button v-for="item in btns" v-text="item"></button>
+					</p>
+				</div>
+			</div>
+			<span v-text="songList"></span>
+			<span class="spanTwo" v-text="pSmall"><span>1313212</span></span>
+			<div class="right_bottom">
+				<grid :data="data" @user-del="userDelMusic"></grid>
+			</div>
+		</div>
+	</div>
+</template>
+<!-- grid模板 -->
+<template id="grid">
+	<div class="table">
+		<table>
+			<thead>
+				<th v-for="item in headers" v-text="item"></th>
+				<th><a href="#">操作</a></th>
+			</thead> 
+			<tbody>
+				<tr v-for="item in data.list">
+					<td v-for="item2 in fields">
+						<span v-if="item2!='id'&&item2!='time'">{{filterPro(item[item2])}}</span>
+						<a v-else-if="item2=='id'" v-text="item[item2]" href="#" onclick="return false"></a>
+						<span v-else>{{filterTime(item[item2])}}</span>
+					</td>
+					<td>
+						<a href="#" onclick="return false" @click="del($event,item[id])"><img src="images/Dyh/del.png" alt=""></a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</template>
+<script type="text/javascript">
+	var vm=new Vue({
+		el:'#app',
+		data:{
+			curMainMenu:0,
+			curSubMenu:0,
+			curhtml:{curMainMenu:2,curSubMenu:-1},
+			loginFlag:false,
+		},
+		methods:{
+			getLoginFlag:function(flag){
+				this.loginFlag=flag;
+			},
+			getCurMenu:function(data){
+				this.curMainMenu=data.curMainMenu;
+				this.curSubMenu=data.curSubMenu;
+			},
+			LoginIn:function(){
+				window.location.replace('file:///E:/VueWEB/client/loginIn.html');
+			}
+		},
+	});
+</script>
+</html>

@@ -1,0 +1,74 @@
+*{padding: 0;margin: 0;}
+ul{list-style: none;}
+body{min-width:1000px;box-sizing: border-box;position: relative;background-color: #F5F5F5;}
+html{height: 100%;position: relative;}
+body{min-height: 100%;min-width: 100%;padding-bottom: 75px;box-sizing: border-box;}
+a{text-decoration: none;color: black;}
+.content{position: relative;margin: 0 auto;width: 1000px;height: 100%;}
+
+
+/*弹出窗口样式*/
+#alertFrame{
+	width: 100%;
+	height: 100%;
+	background:rgba(160,160,160,0.9);
+	position: absolute;
+	top: 50%;left: 50%;
+	transform: translateX(-50%) translateY(-50%);
+}
+#alertFrame>div{
+	position: absolute;
+	width: 300px;
+	height: 200px;
+	top: 50%;left: 50%;
+	transform: translateX(-50%) translateY(-50%);
+	background: white;
+	border-radius: 10px;
+	overflow: hidden;
+}
+#alertFrame>div>*{
+	box-sizing: border-box;
+	overflow: hidden;
+}
+#alertFrame>div>h1{
+	text-align: left;
+	height: 40px;
+	line-height: 40px;
+	text-indent: 20px;
+	font-size: 16px;
+	cursor: pointer;
+	background:#d13030;
+	color: white;
+	-webkit-user-select:none;
+	-moz-user-select:none;
+	-ms-user-select:none;
+}
+#alertFrame>div>div{
+	height: 120px;
+	width: 100%;
+	padding: 20px;
+	position: relative;
+}
+#alertFrame>div>div>p{
+	position: absolute;
+	top: 50%;left: 50%;
+	transform: translateX(-50%) translateY(-50%);
+	font-size: 16px;
+	color: #333;
+	text-align: center;
+}
+#alertFrame>div>h2{
+	height: 40px;
+	width: 100%;
+	background:rgba(236,35,35,0.6);
+	position: relative;
+}
+#alertFrame>div>h2>input{
+	position: absolute;
+	right: 20px;
+	font-size: 12px;
+	width: 60px;
+	height: 24px;
+	top: 50%;right: 20px;
+	transform:translateY(-50%);
+}

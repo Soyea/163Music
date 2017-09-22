@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>我的电台</title>
+	<!-- 重置样式表 -->
+	<link rel="stylesheet" type="text/css" href="css/public/reset.css">
+	<!-- 此处引用本页面样式表-->
+	<link rel="stylesheet" type="text/css" href="css/myRadio/myRadio.css">
+	<link rel="stylesheet" type="text/css" href="css/myRadio/nologin.css">
+	<!-- 共用组件样式表 -->
+	<link rel="stylesheet" type="text/css" href="css/public/htmlfooter.css">
+	<link rel="stylesheet" type="text/css" href="css/public/htmlhead.css">
+	<link rel="stylesheet" type="text/css" href="css/public/backTopBtn.css">
+	<!-- 引入cookie工具函数和vue全家桶 -->
+	<script type="text/javascript" src="js/cookieUtil.js"></script>
+	<script type="text/javascript" src='js/vue.js'></script>
+	<script type="text/javascript" src='js/vuex.js'></script>
+	<script type="text/javascript" src='js/vue-resource.js'></script>
+	<!-- 本页面组件 -->
+	<script type="text/javascript" src="components/myRadio/myRadio.js"></script>
+	<!-- 共用全局组件 -->
+	<script type="text/javascript" src="components/public/htmlfooter.js"></script>
+	<script type="text/javascript" src="components/public/htmlhead.js"></script>
+	<script type="text/javascript" src="components/public/backTopBtn.js"></script>	
+</head>
+<body>
+	<div id="app">
+		<htmlhead :curhtml="curhtml" @login-change="getLoginFlag" @menu-change="getCurMenu"></htmlhead>
+		<div v-if="curMainMenu==3&&!loginInfo.flag" class="noLogin_bg">
+			<div class="mid_content">
+				<div class="left"></div>
+				<div class="right">
+					<h1>登录云音乐</h1>
+					<p>查看并管理你的电台,<br/><span style="font-size: 28px">PS: 我们还差2个娃<br>你想来吗？</span></p>
+					<button @click="LoginIn">立即登录</button>
+				</div>
+			</div>
+		</div>
+		<radiobody v-if="curMainMenu==3&&loginInfo.flag"></radiobody>
+		<backtop></backtop>
+		<htmlfooter></htmlfooter>
+	</div>
+</body>
+
+	<!-- head组件模板 -->
+	<template id="htm_head">
+		<div class="html_head">
+			<div class="head_content">
+				<a hidefocus="true" href="index.html"><img :src="logoUrl" alt="Logo"></a>
+				<ul class="head_mainMenu">
+					<li v-for="(title,index) in mainMenu" :class="{active:index==curMainMenu}" @click="mainMenuTab(index)">
+						<a v-text="title.name" hidefocus="true" href="#" onclick="return false"></a>
+					</li>
+				</ul>
+				<div>
+					<input type="text" name="" placeholder="请输入搜索内容">
+					<strong @mouseover="loginInShow=!loginInShow" @mouseout="loginInShow=!loginInShow">
+						<a hidefocus="true" href="loginIn.html" v-show="!attitudeFlag" v-text="attitudeMsg.noFlag.msg"></a>
+						<a hidefocus="true" href="users.html" v-show="attitudeFlag" v-text="attitudeMsg.isFlag.msg"></a>
+					<ul v-show="loginInShow">
+						<li><a hidefocus="true" href="signUp.html">注册用户</a></li>
+						<li v-show="attitudeFlag"><a hidefocus="true" href="" @click="loginOut">退出登录</a></li>
+	
+					</ul>
+					</strong>
+				</div>
+			</div>
+			<div class="head_bottom" v-show="curMainMenu==0">
+				<div class="head_subMenu">
+					<ul>
+						<li v-for="(title,index) in subMenu">
+							<a hidefocus="true" href="#" v-text="title.name" :class="{active:index==curSubMenu}" @click="subMenuTab(index)" onclick="return false"></a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</template>
+	<!-- footer组件模板 -->
+	<template id="htm_footer">
+		<div class="htm_footer">
+			<div class="footer_content">
+				<h2>
+					<a v-for="aText in footA" href="#" v-text="aText"></a>
+				</h2>
+				<h3 v-text="footContent"></h3>
+			</div>
+		</div>
+	</template>
+	<!-- backTop回到顶部模板 -->
+	<template id="back_TopBtn">
+		<a v-show="isShow" class="back_TopBtn" hidefocus="true" href="#" hidefocus="true" title="回到顶部"></a>
+	</template>
+	<template id="radio_Body">
+		<div class="content radio_Body">
+			<leftlist @add-radio="getData"></leftlist>
+			<rightlist @del-radio="getData" :radio-info="radioInfo"></rightlist>
+		</div>
+	</template>
+	<template id="left_List">
+		<div class="left_List">
+			<h1>
+				<span>电台·推荐</span>
+				<i @click="getData"></i>
+			</h1>
+			<ul>
+				<li v-for="(item,index) in radioInfo" @mouseover="curLi=index" @mouseout="curLi=-1">
+					<img :src="item.imgUrl" alt="">
+					<h2>
+						<a href="#" onclick="return false" v-text="item.title"></a>
+					</h2>
+					<h3>					
+						<span>by</span>
+						<a href="#" onclick="return false" v-text="item.author"></a>
+					</h3>
+					<i v-show="curLi==index" @click="addRadio(item.id)"></i>
+				</li>
+			</ul>
+		</div>
+	</template>
+	<template id="right_List">
+		<div class="right_List">
+			<h1>
+				<span>我订阅的电台</span>
+				<span v-text="totalNum"></span>
+			</h1>
+			<ul>
+				<li v-for="item in radioInfo">
+					<img :src="item.imgUrl" alt="">
+					<h2>
+						<a href="#" onclick="return false" v-text="item.title"></a>
+					</h2>
+					<h3>					
+						<span>by</span>
+						<a href="#" onclick="return false" v-text="item.author"></a>
+					</h3>
+					<span class="del_ico" @click="delRadio(item.id)">×</span>
+					<span class="radio_type" v-text="item.type"></span>
+					<i v-text="item.total+'期'"></i>
+				</li>
+			</ul>
+		</div>
+	</template>
+<script type="text/javascript">
+	var vm=new Vue({
+		el:'#app',
+		components:{radiobody:radio_Body},
+		data:{
+			curMainMenu:0,
+			curSubMenu:0,
+			curhtml:{curMainMenu:3,curSubMenu:-1},
+			loginInfo:{flag:false},
+		},
+		methods:{
+			getLoginFlag:function(flag){
+				this.loginInfo.flag=flag;
+			},
+			getCurMenu:function(data){
+				this.curMainMenu=data.curMainMenu;
+				this.curSubMenu=data.curSubMenu;
+			},
+			LoginIn:function(){
+				window.location.replace('file:///E:/VueWEB/client/loginIn.html');
+			}
+		},
+	});
+</script>
+</html>

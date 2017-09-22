@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>个人设置</title>
+	<!-- 重置样式表 -->
+	<link rel="stylesheet" type="text/css" href="css/public/reset.css">
+	<!-- 此处引用本页面样式表-->
+	<link rel="stylesheet" type="text/css" href="css/users/users.css">
+	<!-- 共用组件样式表 -->
+	<link rel="stylesheet" type="text/css" href="css/public/htmlfooter.css">
+	<link rel="stylesheet" type="text/css" href="css/public/htmlhead.css">
+	<!-- 引入cookie工具函数和vue全家桶 -->
+	<script type="text/javascript" src="js/cookieUtil.js"></script>
+	<script type="text/javascript" src='js/vue.js'></script>
+	<script type="text/javascript" src='js/vuex.js'></script>
+	<script type="text/javascript" src='js/vue-resource.js'></script>
+	<!-- 本页面组件 -->
+	<script type="text/javascript" src="components/users/users.js"></script>
+	<!-- 共用全局组件 -->
+	<script type="text/javascript" src="components/public/htmlfooter.js"></script>
+	<script type="text/javascript" src="components/public/htmlhead.js"></script>
+	<script type="text/javascript" src="components/public/backTopBtn.js"></script>
+
+</head>
+<body>
+	<div id="app">
+		<htmlhead :curhtml="curhtml" @login-change="getLoginFlag"></htmlhead>
+		<div v-if="!loginFlag" class="content userBody"></div>
+		<userset v-if="loginFlag"></userset> 
+		<backtop></backtop>
+		<htmlfooter></htmlfooter>
+	</div>
+</body>
+
+	<!-- head组件模板 -->
+	<template id="htm_head">
+		<div class="html_head">
+			<div class="head_content">
+				<a hidefocus="true" href="index.html"><img :src="logoUrl" alt="Logo"></a>
+				<ul class="head_mainMenu">
+					<li v-for="(title,index) in mainMenu" :class="{active:index==curMainMenu}" @click="mainMenuTab(index)">
+						<a v-text="title.name" hidefocus="true" href="#" onclick="return false"></a>
+					</li>
+				</ul>
+				<div>
+					<input type="text" name="" placeholder="请输入搜索内容">
+					<strong @mouseover="loginInShow=!loginInShow" @mouseout="loginInShow=!loginInShow">
+						<a hidefocus="true" href="loginIn.html" v-show="!attitudeFlag" v-text="attitudeMsg.noFlag.msg"></a>
+						<a hidefocus="true" href="users.html" v-show="attitudeFlag" v-text="attitudeMsg.isFlag.msg"></a>
+					<ul v-show="loginInShow">
+						<li><a hidefocus="true" href="signUp.html">注册用户</a></li>
+						<li v-show="attitudeFlag"><a hidefocus="true" href="index.html" @click="loginOut">退出登录</a></li>
+
+					</ul>
+					</strong>
+				</div>
+			</div>
+			<div class="head_bottom" v-show="curMainMenu==0">
+				<div class="head_subMenu">
+					<ul>
+						<li v-for="(title,index) in subMenu">
+							<a hidefocus="true" href="#" v-text="title.name" :class="{active:index==curSubMenu}" @click="subMenuTab(index)" onclick="return false"></a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</template>
+	<!-- footer组件模板 -->
+	<template id="htm_footer">
+		<div class="htm_footer">
+			<div class="footer_content">
+				<h2>
+					<a v-for="aText in footA" href="#" v-text="aText"></a>
+				</h2>
+				<h3 v-text="footContent"></h3>
+			</div>
+		</div>
+	</template>
+	<!-- backTop回到顶部模板 -->
+	<template id="back_TopBtn">
+		<a v-show="isShow" class="back_TopBtn" hidefocus="true" href="#" hidefocus="true" title="回到顶部"></a>
+	</template>
+	<template id="user_Set">
+		<div class="content userset">
+			<h1>个人设置</h1>
+			<ul>
+				<li v-for="(opt,index) in options" v-text="opt.name" :class="{active:curTab==index}" @click="curTab=index"></li>
+			</ul>
+			<div class="usersetCon" v-for="(opt,index) in options" v-show="curTab==index">
+				<ul >
+					<li type="headImg" v-if="curTab==0">
+						<img src="./images/userImg/default.png" alt="">
+						<span>更换头像</span>
+					</li>
+					<li v-for="p in opt.config">
+						<label>{{filterPro(p.name)+':'}}</label>
+						<template v-if="p.name=='area'">
+							<select v-model="userBaseInfo[p.name].province">
+								<option v-for="opt in p.options[0]" :value="opt.value" v-text="opt.name">
+								</option>
+							</select>
+							<select v-model="userBaseInfo[p.name].city">
+								<option v-for="opt in p.options[1]" :value="opt.value" v-text="opt.name">
+								</option>
+							</select>							
+						</template>
+						<input v-else-if="p.name=='username'" type="text" v-model="userBaseInfo[p.name]" :disabled="isDisabled">
+						<template v-else-if="p.name=='sex'">
+							<template v-for="opt in p.options">
+								<input type="radio" :name="p.name" :value="opt.value" v-model="userBaseInfo[p.name]">
+								<span v-text="opt.name"></span>
+							</template>
+						</template>
+						<input v-else type="text" v-model="userBaseInfo[p.name]">
+					</li>
+					<li><input type="button" name="" value="保存" @click="submitSet(curTab)"></li>
+				</ul>
+			</div>
+		</div>
+	</template>
+<script type="text/javascript">
+	var vm=new Vue({
+		el:'#app',
+		components:{userset:user_Set},
+		data:{
+			curhtml:{curMainMenu:-1,curSubMenu:-1},
+			loginFlag:false,
+		},
+		methods:{
+			getLoginFlag:function(flag){
+				this.loginFlag=flag;
+			},
+		}
+	});
+</script>
+</html>

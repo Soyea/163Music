@@ -1,0 +1,16 @@
+.back_TopBtn{
+	height: 44px;width: 44px;
+	border-radius: 5px;
+	/*border: 1px solid black;*/
+	position: fixed;
+	bottom:100px;right: 100px;
+	cursor: pointer;
+	background: url('../../images/backTopBtn.png') no-repeat;
+	background-size: 100%;
+	background-position: center center;
+}
+.back_TopBtn:hover{
+	background: url('../../images/backTopBtn_hover.png') no-repeat;
+	background-size: 100%;
+	background-position: center center;
+}

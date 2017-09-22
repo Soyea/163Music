@@ -1,0 +1,138 @@
+.userBody{
+	min-height: 500px;
+}
+.userset{
+	padding: 40px;
+	min-height: 600px;
+	background: white;
+	border: 1px solid #ccc;
+	width: 980px !important;
+}
+.userset>h1{
+	font-size: 24px;
+	color: #333;
+	font-weight: 500;
+	margin-bottom: 12px;
+}
+.userset>ul{
+	height: 38px;
+	box-sizing: border-box;
+	border: 1px solid #ccc;
+	border-top: 2px solid #ccc;
+	background: #f8f8f8;
+	position: relative;
+	margin-bottom: 20px;
+}
+.userset>ul>li{
+	position: relative;
+	top: -2px;
+	/*left: -1px;*/
+	height: 38px;
+	width: 140px;
+	float: left;
+	box-sizing: border-box;
+	text-align: center;
+	line-height: 38px;
+	color: #333;
+	cursor: pointer;
+	border-top: 2px solid #ccc;
+}
+.userset>ul>li:hover{
+	padding: 0;
+	border-top: 2px solid #c20c0c;	
+}
+.userset>ul>li.active{
+	background: white;
+	border-top: 2px solid #c20c0c;
+	border-left: 1px solid #ccc;
+	border-right:1px solid #ccc;
+}
+
+
+.usersetCon{
+	box-sizing: border-box;
+	padding:28px 6px 28px;
+}
+.usersetCon>ul{
+	margin-bottom: 36px;
+	position:relative;
+}
+.usersetCon>ul>li{
+	height: 40px;
+	margin-bottom: 22px;
+}
+.usersetCon>ul>li>*{
+	display: inline-block;
+	float: left;
+}
+.usersetCon>ul>li:first-child{
+	position: absolute;
+	left: 400px;top: 0;
+	width: 200px;
+	height: 200px;
+}
+.usersetCon>ul>li:first-child>img{
+	width: 100%;
+}
+.usersetCon>ul>li:first-child>span{
+	cursor: pointer;
+	height:24px;
+	font-size: 14px;
+	line-height: 24px;
+	text-align: center; 
+	margin:0;
+	position: absolute;
+	bottom: 0;left: 0;
+	width: 100%;
+	color: white;
+	background: rgba(159,160,158,0.6);
+}
+.usersetCon>ul>li>label{
+	height: 38px;
+	line-height: 38px;
+	font-size: 14px;
+	color: #666;
+	width: 68px;
+	text-align: left;
+}
+.usersetCon>ul>li>input[type="text"]{
+	height: 38px;
+	width: 308px;
+	font-size: 18px;
+	color: #333;
+	text-indent: 10px;
+	box-sizing: border-box;
+	padding: 5px;
+}
+.usersetCon>ul>li>input[type="radio"]{
+	height: 100%;
+	width: 20px;display: block;float:left;margin-left: 20px;
+}
+.usersetCon>ul>li>span{
+	display: block;
+	width: 20px;height: 38px;
+	line-height: 38px;
+	margin-left: 20px;
+}
+.usersetCon>ul>li select{
+	height:38px;text-indent:1em;width:200px;
+	width: 100px;
+	margin-right: 20px;
+}
+.usersetCon>ul>li select>option{
+		text-align: center;
+}
+.usersetCon>ul>li>input[type="button"]{
+	margin-top: 30px;
+	margin-left: 60px;
+	width: 82px;
+	height: 40px;
+	background: #3b8ad4;
+	color: white;
+	border-radius: 10px;
+	border: none;
+	cursor: pointer;
+}
+.usersetCon>ul>li>input[type="button"]:hover{
+	background: #4493dc;
+}

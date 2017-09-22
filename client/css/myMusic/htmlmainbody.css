@@ -1,0 +1,112 @@
+/*mainbody样式*/
+	.mainbody_content{
+		overflow:hidden;
+		width:998px;min-height:1500px;
+		margin:0 auto;
+		position:relative;
+		border-left:1px solid #c3c3c3;
+		border-right:1px solid #c3c3c3;
+	}
+	.mainbody_content>.main_left{
+		width:268px;min-height:912px;
+		float:left;
+		position:fixed;top:90px;bottom:0;
+		overflow-y:auto;
+		overflow-x:hidden;
+		background-color:#f9f9f9;
+	}
+	.mainbody_content>.main_left>.left_list{
+		width: 100%;height: 100%;
+		padding-top:60px;
+		padding-bottom:50px;
+	}
+	.mainbody_content>.main_left>.left_list>h3{
+		padding-left:30px;
+		margin-bottom:20px;
+	}
+	.mainbody_content>.main_left>.left_list>ul{
+		list-style:none;
+	}
+	.mainbody_content>.main_left>.left_list>ul>li{
+		width: 100%;height:50px;
+		padding:10px 20px 0px 20px;
+	}
+	.mainbody_content>.main_left>.left_list>ul>li:hover{
+		background-color:#eef2ee;
+	}
+	.mainbody_content>.main_left>.left_list>ul>li:active{
+		background-color:#e3e3e5;
+	}
+	.mainbody_content>.main_left>.left_list>ul>li>.listLogo{
+		float:left;
+		cursor:pointer;
+		margin-right:20px;
+	}
+	.mainbody_content>.main_left>.left_list>ul>li>.listP{
+		float:left;
+		cursor:pointer;
+	}
+	.mainbody_content>.main_left>.left_list>ul>li>.listP>p:nth-child(2){
+		font-size: 14px;color:gray;
+	}
+	.mainbody_content>.main_right{
+		width:730px;min-height:100%;
+		float:right;
+		background-color:#fff;
+		position:absolute;left:268px;top:90px;
+	}
+	.mainbody_content>.main_right>.right_top{
+		height:250px;
+		padding-top:60px;
+		padding-left:30px;
+	} 
+	.mainbody_content>.main_right>.right_top>.f_left{
+		float:left;
+		width:240px;
+		cursor:pointer;
+	}
+	.mainbody_content>.main_right>.right_top>.f_right{
+		float:left;
+		width:200px;
+	}
+	.mainbody_content>.main_right>.right_top>.f_right>img{
+		vertical-align:middle;
+	}
+	.mainbody_content>.main_right>.right_top>.f_right>.userName{
+		width: 200px;
+		height: 30px;
+		margin-top:40px;color: #3e73d5;
+		padding-left: 10px;
+	}
+	.mainbody_content>.main_right>.right_top>.f_right>.userName:hover{
+		text-decoration: underline;cursor: pointer;
+	}
+	.mainbody_content>.main_right>.right_top>.f_right>p{
+		margin-top:40px;
+	}
+	.mainbody_content>.main_right>.right_top>.f_right>p>button{
+		width:70px;height: 30px;
+		margin-right:20px;
+		color:#333;
+		background:#fff;
+		border:1px solid #ddd;
+		border-radius:5px;
+		cursor:pointer;
+	}
+	.mainbody_content>.main_right>.right_top>.f_right>p>button:hover{
+		background-color:#e3e3e5;
+	}
+	.mainbody_content>.main_right>.right_bottom{
+		height:100%;
+		margin-top:10px;
+		border-top:2px solid #c62f2f;
+	}
+	.mainbody_content>.main_right>span{
+		margin-left:10px;
+		font-size:18px;
+	}
+	.mainbody_content>.main_right>.spanTwo{
+		font-size:14px;
+		color:gray;
+	}
+

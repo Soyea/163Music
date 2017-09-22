@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>音乐库</title>
+	<!-- 重置样式表 -->
+	<link rel="stylesheet" type="text/css" href="css/public/reset.css">
+	<!-- 此处引用本页面样式表-->
+	<link rel="stylesheet" type="text/css" href="css/musicStore/musicStore.css">
+	<!-- 共用组件样式表 -->
+	<link rel="stylesheet" type="text/css" href="css/public/htmlfooter.css">
+	<link rel="stylesheet" type="text/css" href="css/public/htmlhead.css">
+	<link rel="stylesheet" type="text/css" href="css/public/backTopBtn.css">
+	<!-- 引入cookie工具函数和vue全家桶 -->
+	<script type="text/javascript" src="js/cookieUtil.js"></script>
+	<script type="text/javascript" src='js/vue.js'></script>
+	<script type="text/javascript" src='js/vuex.js'></script>
+	<script type="text/javascript" src='js/vue-resource.js'></script>
+	<!-- 本页面组件 -->
+	<script type="text/javascript" src="components/musicStore/musicStore.js"></script>
+	<!-- 共用全局组件 -->
+	<script type="text/javascript" src="components/public/htmlfooter.js"></script>
+	<script type="text/javascript" src="components/public/htmlhead.js"></script>
+	<script type="text/javascript" src="components/public/backTopBtn.js"></script>	
+	<!-- 引入首页仓库 -->
+	<script type="text/javascript" src="store/musicStore_store.js"></script>
+</head>
+<body>
+	<div id="app">
+		<htmlhead :curhtml="curhtml" @login-change="getLoginFlag" ></htmlhead>
+		<searchtab @tab-change="tabChange"></searchtab>
+		<musicgrid :total-num="searchInfo.seperator.total" :list-data="listData" :login-info="loginInfo"></musicgrid>
+		<page @change-page="pageChange"></page>
+		<backtop></backtop>
+		<htmlfooter></htmlfooter>
+	</div>
+</body>
+	<!-- head组件模板 -->
+	<template id="htm_head">
+		<div class="html_head">
+			<div class="head_content">
+				<a hidefocus="true" href="index.html"><img :src="logoUrl" alt="Logo"></a>
+				<ul class="head_mainMenu">
+					<li v-for="(title,index) in mainMenu" :class="{active:index==curMainMenu}" @click="mainMenuTab(index)">
+						<a v-text="title.name" hidefocus="true" href="#" onclick="return false"></a>
+					</li>
+				</ul>
+				<div>
+					<input type="text" name="" placeholder="请输入搜索内容">
+					<strong @mouseover="loginInShow=!loginInShow" @mouseout="loginInShow=!loginInShow">
+						<a hidefocus="true" href="loginIn.html" v-show="!attitudeFlag" v-text="attitudeMsg.noFlag.msg"></a>
+						<a hidefocus="true" href="users.html" v-show="attitudeFlag" v-text="attitudeMsg.isFlag.msg"></a>
+					<ul v-show="loginInShow">
+						<li><a hidefocus="true" href="signUp.html">注册用户</a></li>
+						<li v-show="attitudeFlag"><a hidefocus="true" href="" @click="loginOut">退出登录</a></li>
+
+					</ul>
+					</strong>
+				</div>
+			</div>
+			<div class="head_bottom" v-show="curMainMenu==0">
+				<div class="head_subMenu">
+					<ul>
+						<li v-for="(title,index) in subMenu">
+							<a hidefocus="true" href="#" v-text="title.name" :class="{active:index==curSubMenu}" @click="subMenuTab(index)" onclick="return false"></a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</template>
+	<!-- footer组件模板 -->
+	<template id="htm_footer">
+		<div class="htm_footer">
+			<div class="footer_content">
+				<h2>
+					<a v-for="aText in footA" href="#" v-text="aText"></a>
+				</h2>
+				<h3 v-text="footContent"></h3>
+			</div>
+		</div>
+	</template>
+	<!-- backTop回到顶部模板 -->
+	<template id="back_TopBtn">
+		<a v-show="isShow" class="back_TopBtn" hidefocus="true" href="#" hidefocus="true" title="回到顶部"></a>
+	</template>
+	<!-- 搜索筛选模板 -->
+	<template id="searchTab_Body">
+		<div class="searchCase">
+			<div class="content">
+				<div class="searchInput">
+					<input type="text" placeholder="搜索 音乐/歌手" v-model="curTab.key">
+					<span @click="tabChange()"></span>
+				</div>
+				<div class="searchTab" v-for="item in config">
+					<span>{{filterPro(item.title)}}</span>
+					<ul>
+						<li v-for="tab in item.tabs" :class="{active:curTab[item.title]==tab}" @click="tabChange(item.title,tab)">
+						{{filterPro(tab)}}</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</template>
+	<!-- 音乐列表模板 -->
+	<template id="musicGrid">
+		<div class="musicGrid content">
+			<h1>
+				<span>歌曲列表</span>
+				<span><i v-text="totalNum"></i>首歌</span>
+			</h1>
+			<table>
+				<thead>
+					<tr>
+						<th v-for="item in config.headers">{{filterPro(item)}}</th>
+					</tr>
+				</thead>
+				<tbody v-if="!!listData.list">
+					<tr v-for="(i,index) in 49" @mouseover="curTr=index" @mouseout="curTr=-1">
+						<td v-if="!ii" v-for="ii in config.headers">
+							<span v-text="i"></span>
+							<i>hot</i>
+						</td>
+						<td v-else-if="listData.list[index]&&ii!='time'">{{filterPro(listData.list[index][ii])}}</td>
+						<td v-else-if="listData.list[index]&&ii=='time'">
+							<span>{{filterTime(listData.list[index][ii])}}</span>
+							<ul v-show="curTr==index" class="userFn">
+								<li v-for="li in listFn" @mouseover="li.src=li.hover" @mouseout="li.src=li.img" @click="useFn(li.fnName,listData.list[index].id)">
+									<img :src="li.src" alt="">
+								</li>
+							</ul>
+						</td>							
+						<td v-else></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</template>
+	<!-- 配置分页组件模板 -->
+	<template id="page">
+		<div class="page_tab content">
+			<ul>
+				<li class="cur_pages" @click="change(seperator.curIndex-1)"><</li>
+				<li class="cur_pages" v-for="i in pagesNum" v-text="pageTabN+i" :class="{cur_active:(pageTabN+i)==seperator.curIndex}" @click="change(pageTabN+i)"></li>
+				<span v-if="pagesNum+pageTabN+1<totalPages">...</span>
+				<li v-if="pagesNum+pageTabN<totalPages" class="cur_pages" v-text="totalPages" :class="{cur_active:(totalPages)==seperator.curIndex}" @click="change(totalPages)"></li>
+				<li class="cur_pages" @click="change(seperator.curIndex+1)">></li>
+				<li>到第<input type="text" v-model="skipPage">页</li>
+				<li><input type="button" value="跳转" @click=change(skipPage)></li>
+			</ul>
+		</div>
+	</template>
+<script type="text/javascript">
+	var vm=new Vue({
+		el:'#app',
+		components:{searchtab:searchTab,musicgrid:musicGrid,page:page},
+		data:{
+			//当前页面
+			curhtml:{curMainMenu:1,curSubMenu:-1},
+			//页面子组件只需要登录状态，定义一个字面量让其引用地址
+			loginInfo:{flag:false},
+			url:'http://localhost:8080/getMusicData/store/',
+			listData:{list:[]},
+			searchInfo:searchInfo,
+		},
+		methods:{
+			getLoginFlag:function(flag){
+				// console.log(flag)
+				// this.$store.state.loginFlag=flag;
+				this.loginInfo.flag=flag; 
+			},
+			tabChange:function(curTab){
+				for(var p in curTab){
+					this.searchInfo.condition[p]=curTab[p]					
+				}
+				// console.log(this.searchInfo);
+				this.searchInfo.seperator.curIndex=1;
+				this.getData();
+			},
+			pageChange:function(){
+				console.log(1);
+				this.getData();
+			},
+			getData:function(){
+				// 发送ajax获取数据
+				this.$http({
+					url:this.url,
+					method:'post',
+					data:{data:JSON.stringify(this.searchInfo)},
+					emulateJSON:true,
+				}).then(function(res){
+					this.listData.list=res.data.data;
+					this.searchInfo.seperator.total=res.data.total;
+					// this.listData.list=res.data.list.splice(0,50);
+				},function(){})				
+			}
+		},
+	});
+</script>
+</html>

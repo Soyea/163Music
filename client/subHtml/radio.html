@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>主播电台</title>
+	<!-- 重置样式表 -->
+	<link rel="stylesheet" type="text/css" href="../css/public/reset.css">
+	<!-- 此处引用本页面样式表-->
+	<link rel="stylesheet" type="text/css" href="./css/radio.css">
+	<!-- 共用组件样式表 -->
+	<link rel="stylesheet" type="text/css" href="../css/public/htmlfooter.css">
+	<link rel="stylesheet" type="text/css" href="../css/public/htmlhead.css">
+	<link rel="stylesheet" type="text/css" href="../css/public/backTopBtn.css">	
+	<!-- 引入cookie工具函数和vue全家桶 -->
+	<script type="text/javascript" src="../js/cookieUtil.js"></script>
+	<script type="text/javascript" src='../js/vue.js'></script>
+	<script type="text/javascript" src='../js/vuex.js'></script>
+	<script type="text/javascript" src='../js/vue-resource.js'></script>
+	<!-- 本页面组件 -->
+	<script type="text/javascript" src="./js/radio.js"></script>
+	<!-- 共用全局组件 -->
+	<script type="text/javascript" src="../components/public/htmlfooter.js"></script>
+	<script type="text/javascript" src="../components/public/htmlhead.js"></script>
+	<script type="text/javascript" src="../components/public/backTopBtn.js"></script>	
+</head>
+<body>
+	<div id="app">
+		<htmlhead :curhtml="curhtml" @login-change="getLoginFlag" ></htmlhead>
+		<div class="content radio_Body">
+			<searchtab @tab-change="tabChange"></searchtab>
+			<radiolist :login-info="loginInfo" :radio-data="radioData" @next-page="nextPage"></radiolist>
+		</div>
+ 		<backtop></backtop>
+		<htmlfooter></htmlfooter>
+	</div>
+</body>
+
+	<!-- head组件模板 -->
+	<template id="htm_head">
+		<div class="html_head">
+			<div class="head_content">
+				<a hidefocus="true" href="../index.html"><img :src="logoUrl" alt="Logo"></a>
+				<ul class="head_mainMenu">
+					<li v-for="(title,index) in mainMenu" :class="{active:index==curMainMenu}" @click="mainMenuTab(index)">
+						<a v-text="title.name" hidefocus="true" href="#" onclick="return false"></a>
+					</li>
+				</ul>
+				<div>
+					<input type="text" name="" placeholder="请输入搜索内容">
+					<strong @mouseover="loginInShow=!loginInShow" @mouseout="loginInShow=!loginInShow">
+						<a hidefocus="true" :href="loginInUrl" v-show="!attitudeFlag" v-text="attitudeMsg.noFlag.msg"></a>
+						<a hidefocus="true" :href="userUrl" v-show="attitudeFlag" v-text="attitudeMsg.isFlag.msg"></a>
+					<ul v-show="loginInShow">
+						<li><a hidefocus="true" :href="signUpUrl">注册用户</a></li>
+						<li v-show="attitudeFlag"><a hidefocus="true" href="" @click="loginOut">退出登录</a></li>
+
+					</ul>
+					</strong>
+				</div>
+			</div>
+			<div class="head_bottom" v-show="curMainMenu==0">
+				<div class="head_subMenu">
+					<ul>
+						<li v-for="(title,index) in subMenu">
+							<a hidefocus="true" href="#" v-text="title.name" :class="{active:index==curSubMenu}" @click="subMenuTab(index)" onclick="return false"></a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</template>
+	<!-- footer组件模板 -->
+	<template id="htm_footer">
+		<div class="htm_footer">
+			<div class="footer_content">
+				<h2>
+					<a v-for="aText in footA" href="#" v-text="aText"></a>
+				</h2>
+				<h3 v-text="footContent"></h3>
+			</div>
+		</div>
+	</template>
+	<!-- backTop回到顶部模板 -->
+	<template id="back_TopBtn">
+		<a v-show="isShow" class="back_TopBtn" hidefocus="true" href="#" hidefocus="true" title="回到顶部"></a>
+	</template>
+	<template id="searchTab_Body">
+		<div class="searchCase">
+			<span class="refresh_icon" @click="getAll">全部</span>
+			<ul>
+				<li v-for="tab in config" :class="{active:curTab==tab}" @click="tabChange(tab.title)">
+					<div :style="{backgroundImage:'url('+tab.logoUrl+')'}"></div>
+					<span><a href="#" onclick="return false" v-text="tab.title"></a></span>
+				</li>
+			</ul>
+		</div>
+	</template>
+	<template id="radioList_Body">
+		<div class="radiolist">
+			<h1>
+				<span>· 电台</span>
+				<i v-text="totalNum"></i>
+			</h1>
+			<ul>
+				<li v-for="item in itemsL">
+					<img :src="item.imgUrl" alt="">
+					<h2>
+						<a href="#" onclick="return false" v-text="item.title"></a>
+					</h2>
+					<h3>					
+						<span>by</span>
+						<a href="#" onclick="return false" v-text="item.author"></a>
+					</h3>
+					<span class="add_ico" @click="addRadio(item.id)">收藏</span>
+					<span class="radio_type" v-text="item.type"></span>
+				</li>
+			</ul>
+			<ul>
+				<li v-for="item in itemsR">
+					<img :src="item.imgUrl" alt="">
+					<h2>
+						<a href="#" onclick="return false" v-text="item.title"></a>
+					</h2>
+					<h3>					
+						<span>by</span>
+						<a href="#" onclick="return false" v-text="item.author"></a>
+					</h3>
+					<span class="add_ico" @click="addRadio(item.id)">收藏</span>
+					<span class="radio_type" v-text="item.type"></span>
+				</li>
+			</ul>
+			<span @click="nextPage">下一页</span>
+		</div>
+	</template>
+<script type="text/javascript">
+	var vm=new Vue({
+		el:'#app',
+		components:{searchtab:searchTab,radiolist:radioList},
+		data:{
+			curhtml:{curMainMenu:0,curSubMenu:2},
+			loginInfo:{flag:false},
+			searchInfo:searchInfo,
+			radioData:{total:0,data:[]},
+		},
+		created:function(){
+			this.getRadioData()
+		},
+		methods:{
+			tabChange:function(curTab){
+				if (!!curTab) {
+					this.searchInfo.condition.type=curTab;
+				}else{
+					this.searchInfo.condition={};
+				}
+				this.getRadioData()
+			},
+			getLoginFlag:function(flag){
+				this.loginInfo.flag=flag;
+			},
+			getRadioData(){
+				// 发送ajax获取数据
+				this.$http({
+						url:'http://localhost:8080/getRadios/getRadiosData/',
+						method:'post',
+						data:{data:JSON.stringify(this.searchInfo)},
+						emulateJSON:true,
+					}).then(function(res){
+						this.radioData=res.data;
+						this.searchInfo.seperator.total=res.data.total;
+					},function(){})
+			},
+			nextPage:function(){
+				var totalPages=Math.ceil(this.searchInfo.seperator.total/this.searchInfo.seperator.pageSize);
+				if (this.searchInfo.seperator.curIndex==totalPages) {
+					this.searchInfo.seperator.curIndex=1;
+					this.getRadioData();
+					return;
+				}
+				this.searchInfo.seperator.curIndex++;
+				this.getRadioData();
+			}
+		}
+	});
+</script>
+</html>

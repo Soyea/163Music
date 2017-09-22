@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>云音乐</title>
+	<!-- 测试数据 -->
+	<script type="text/javascript" src='js/Testdata.js'></script>
+	<!-- 重置样式表 -->
+	<link rel="stylesheet" type="text/css" href="css/public/reset.css">
+	<!-- 主页样式表 -->
+	<link rel="stylesheet" type="text/css" href="css/index/index.css">
+	<!-- 共用组件样式表 -->
+	<link rel="stylesheet" type="text/css" href="css/public/htmlfooter.css">
+	<link rel="stylesheet" type="text/css" href="css/public/htmlhead.css">
+	<link rel="stylesheet" type="text/css" href="css/public/backTopBtn.css">
+	<!-- 引入cookie工具函数和vue全家桶 -->
+	<script type="text/javascript" src="js/cookieUtil.js"></script>
+	<script type="text/javascript" src='js/vue.js'></script>
+	<script type="text/javascript" src='js/vuex.js'></script>
+	<script type="text/javascript" src='js/vue-resource.js'></script>
+	<!-- 共用全局组件 -->
+	<script type="text/javascript" src="components/public/htmlfooter.js"></script>
+	<script type="text/javascript" src="components/public/htmlhead.js"></script>
+	<script type="text/javascript" src="components/public/backTopBtn.js"></script>
+	<!-- 首页组件 -->
+	<script type="text/javascript" src="components/index/banner.js"></script>
+	<script type="text/javascript" src="components/index/hot_rec.js"></script>
+	<script type="text/javascript" src="components/index/loginFrame.js"></script>
+	<script type="text/javascript" src="components/index/hot_Musiclist.js"></script>
+	<!-- 引入首页仓库 -->
+	<script type="text/javascript" src="store/index_store.js"></script>
+</head>
+<body>
+	<div id="app">
+		<htmlhead @login-change="getLoginFlag" :curhtml="curhtml"></htmlhead>
+		<banner></banner>	
+		<div class="content html_body" conFlag="首页">
+			<hotrec></hotrec>
+			<loginframe></loginframe>
+			<hotmusicli></hotmusicli>
+		</div>
+		<htmlfooter></htmlfooter>
+		<backtop></backtop>
+	</div>
+</body>  
+	<!-- head组件模板 -->
+	<template id="htm_head">
+		<div class="html_head">
+			<div class="head_content">
+				<a hidefocus="true" href="index.html"><img :src="logoUrl" alt="Logo"></a>
+				<ul class="head_mainMenu">
+					<li v-for="(title,index) in mainMenu" :class="{active:index==curMainMenu}" @click="mainMenuTab(index)">
+						<a v-text="title.name" hidefocus="true" href="#" onclick="return false"></a>
+					</li>
+				</ul>
+				<div>
+					<input type="text" name="" placeholder="请输入搜索内容">
+					<strong @mouseover="loginInShow=!loginInShow" @mouseout="loginInShow=!loginInShow">
+						<a hidefocus="true" href="loginIn.html" v-show="!attitudeFlag" v-text="attitudeMsg.noFlag.msg"></a>
+						<a hidefocus="true" href="users.html" v-show="attitudeFlag" v-text="attitudeMsg.isFlag.msg"></a>
+					<ul v-show="loginInShow">
+						<li><a hidefocus="true" href="signUp.html">注册用户</a></li>
+						<li v-show="attitudeFlag"><a hidefocus="true" href="" @click="loginOut">退出登录</a></li>
+					</ul>
+					</strong>
+				</div>
+			</div>
+			<div class="head_bottom" v-show="curMainMenu==0">
+				<div class="head_subMenu">
+					<ul>
+						<li v-for="(title,index) in subMenu">
+							<a hidefocus="true" href="#" v-text="title.name" :class="{active:index==curSubMenu}" @click="subMenuTab(index)" onclick="return false"></a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</template>
+	<!-- footer组件模板 -->
+	<template id="htm_footer">
+		<div class="htm_footer">
+			<div class="footer_content">
+				<h2>
+					<a v-for="aText in footA" hidefocus="true" href="#" v-text="aText"></a>
+				</h2>
+				<h3 v-text="footContent"></h3>
+			</div>
+		</div>
+	</template>
+	<!-- banner组件模板 -->
+	<template id="index_banner">
+		<div class="index_banner" v-bind:style="{backgroundImage:'url('+curBannerBg+')'}">
+			<div class="content" @mouseover="stopAutoTab" @mouseout="startAutoTab">
+				<span @click="preBanner"><</span>
+				<img v-for="(banner,index) in bannerImgsInfo" :src="banner.url" :class="{active:curBanner==index}" >
+				<span @click="nextBanner">></span>
+				<ul class="dot_bannerNav">
+					<li v-for="(banner,index) in bannerImgsInfo" @click="bannerTab(index)">
+						<span :class="{active:index==curBanner}"></span>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</template>
+	<!-- hotRec热门推荐组件模板 -->
+	<template id="hot_rec">
+		<div class="hot_rec">
+			<h1>
+				<span v-text="title"></span>
+				<ul>
+					<li v-for="name in selCases" v-text="filterPro(name)" :class="{active:curCase==name}" @click="curCase=name"></li>
+				</ul>
+				<strong><a hidefocus="true" href="#" v-text="titleMore"></a></strong>
+			</h1>
+			<ul class="rec_Con">
+				<li v-for="item in images[curCase]">
+					<img :src="item.url" alt="">
+					<a hidefocus="true" href="" v-text="item.describe" onclick="return false"></a>
+				</li>
+			</ul>
+		</div>
+	</template>
+	<!-- loginFrame用户登录块组件模板 -->
+	<template id="loginFrame">
+		<div class="loginFrame">
+			<h1><img :src="logoUrl" alt=""></h1>
+			<div>
+				<div>
+					<h1 v-text="this.$store.state.loginFlag?titleMsg.isLogin.msg:titleMsg.noLogin.msg"></h1>
+					<span v-show="this.$store.state.loginFlag" v-text="titleMsg.isLogin.name"></span>
+					
+					<p v-show="!this.$store.state.loginFlag">今天文案跑了<br>老大叫我顶一下<br>可我不会啊<br>啥也不说了登录吧
+					</p>
+					<p v-show="this.$store.state.loginFlag">今天听歌了吗？<br>快点击进入<br><a hidefocus="true" href="#" onclick="return false" @click="toMyMusic">我的音乐</a></p>
+				</div>
+				<input type="button" value="立即登录" @click="toLoginIn" v-show="!this.$store.state.loginFlag">
+			</div>
+		</div>
+	</template>
+	<!-- hot_Musiclist榜单组件模板 -->
+	<template id="hot_Musiclist">
+		<div class="hot_Musiclist">
+			<h1>
+				<span v-text="title"></span>
+				<strong><a hidefocus="true" href="#" v-text="titleMore" onclick="return false" @click="changeList"></a></strong>
+			</h1>
+			<div>
+				<img :src="listLogo" alt="listLogo">
+				<div>
+					<h1><a hidefocus="true" href="#" v-text="filterPro(listname)" onclick="return false"></a></h1>
+					<span></span>
+					<span @click="addAll"></span>
+				</div>
+			</div>
+			<ul @mouseout="curLi=-1">
+				<li v-for="(i,index) in 10"  :class="{topThree:index<3,hover:curLi==index}"  @mouseover="curLi=index">
+					<span v-text="i"></span>
+					<a hidefocus="true" href="" v-text="listItems[index].name" onclick="return false"></a>
+					<i :class="{show:curLi==index}" ></i>
+					<i :class="{show:curLi==index}" @click="useFn('add',listItems[index].id)"></i>
+				</li>
+			</ul>
+		</div>
+	</template>
+	<!-- backTop回到顶部模板 -->
+	<template id="back_TopBtn">
+		<a v-show="isShow" class="back_TopBtn" hidefocus="true" href="#" hidefocus="true" title="回到顶部"></a>
+	</template>
+		
+<script type="text/javascript">
+	var vm=new Vue({
+		el:'#app',
+		components:{
+			banner:banner,
+			hotrec:hot_rec,
+			loginframe:loginFrame,
+			hotmusicli:hot_Musiclist,
+			userName:'',
+		},
+		data:{
+			curhtml:{curMainMenu:0,curSubMenu:0,}
+		},
+		store:indexStore,
+		methods:{
+			getLoginFlag:function(flag){
+				this.$store.state.loginFlag=flag;
+			},
+		},
+	});
+</script>
+</html>

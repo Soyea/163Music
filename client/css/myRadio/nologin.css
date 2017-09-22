@@ -1,0 +1,58 @@
+.noLogin_bg{
+	width: 100%;min-height: 600px;
+	background:#F5F5F5;
+}
+.noLogin_bg>.mid_content{
+	width: 1000px;min-height: 600px;
+	border: 2px solid #d3d3d3;
+	background-color: #FFFFFF;
+	margin: 0 auto;
+}
+.noLogin_bg>.mid_content>.left{
+	margin-top: 20px;
+	min-height: 500px;
+	width: 550px;
+	display: inline-block;
+	margin-right: 30px;
+	position: relative;
+	background: url('../../images/notlogin_bg.png') no-repeat;
+}
+.noLogin_bg>.mid_content>.right{
+	width: 400px;min-height: 500px;
+	display: inline-block;
+	position: relative;
+}	
+.noLogin_bg>.mid_content>.right>h1{
+	font:  35px "微软雅黑";
+	position:absolute;
+	top:115px;left:66px;
+	-webkit-user-select:none;
+	-moz-user-select:none;
+	-ms-user-select:none;
+	color: #383838;
+}	
+.noLogin_bg>.mid_content>.right>p{
+	position:absolute;
+	font: 15px/25px "宋体" ;
+	top:170px;left:66px;
+	text-align: left;
+}
+.noLogin_bg>.mid_content>.right>img{
+	position:absolute;
+	top: 230px;left:60px;
+}
+.noLogin_bg>.mid_content>.right>button{
+	width: 150px;height: 40px;
+	border-radius: 10px;
+	position: absolute;
+	top:280px;left:70px;
+	background-color: #1f70c0;
+	font:bold 15px "宋体";
+	color: white;text-align:center;
+	border: none;outline:medium;
+
+}
+.noLogin_bg>.mid_content>.right>button:hover{
+	background-color: #378dd2;
+	cursor: pointer;
+}

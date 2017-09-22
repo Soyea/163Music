@@ -1,0 +1,245 @@
+/*子页面排行榜样式*/
+body{
+	background: #f5f5f5;
+}
+
+.rankList_html{
+	overflow: hidden;
+	background: white;
+	box-shadow:0 0 2px 2px #777;
+	min-height: 500px;
+}
+.rankList_html>.rankLeft,.rankList_html>.rankRight{
+	box-sizing: border-box;	height: 100%;
+	float: left;
+	display: inline-block;
+	overflow: hidden;
+	position: relative;
+	margin-bottom: -10000px;
+	padding-bottom: 10000px;
+}
+
+/*左边部分内容*/
+.rankList_html>.rankLeft{
+	width: 25%;
+	border-right: 1px solid #ccc;
+}
+.rankList_html>.rankLeft .rankList{
+	margin-top: 30px;
+	margin-bottom: 60px;
+}
+.rankList_html>.rankLeft .rankList>h1{
+	font-size: 16px;
+	padding: 0 10px 12px 15px;
+	color: #000;
+}
+.rankList_html>.rankLeft .rankList li{
+	height: 60px;position: relative;
+	padding: 10px 0 10px 20px;
+	box-sizing:border-box;
+	overflow: hidden;
+	cursor: pointer;
+}
+.rankList_html>.rankLeft .rankList li.active{
+	background: #e6e6e6;
+}
+.rankList_html>.rankLeft .rankList li:hover{
+	background: #efefef;
+}
+.rankList_html>.rankLeft .rankList li>*{
+	overflow: hidden;
+	-webkit-user-select:none;
+	-moz-user-select:none;
+	-ms-user-select:none;
+}
+.rankList_html>.rankLeft .rankList li>img{
+	width: 45px;
+	float: left;
+	margin-right: 8px;
+}
+.rankList_html>.rankLeft .rankList li>h1{
+	font-size: 14px;
+	margin-top: 2px;
+	margin-bottom: 6px;
+	font-weight: normal;
+}
+.rankList_html>.rankLeft .rankList li>span{
+	font-size: 12px;
+	color: #999;
+	cursor: pointer;
+}
+
+/*右边部分内容*/
+.rankList_html>.rankRight{
+	width: 75%;
+	padding: 40px 30px 10000px 40px;
+}
+.rankList_html>.rankRight .listInfo{
+	position: relative;
+	overflow: hidden;
+}
+.rankList_html>.rankRight .listInfo>.listLogo{
+	border:1px solid #ccc;
+	padding: 4px;
+	width: 160px;
+	height: 160px;
+	box-sizing: border-box;
+	float: left;
+}
+.rankList_html>.rankRight .listInfo>.listLogo>img{width: 100%;}
+.rankList_html>.rankRight .listInfo>h1{
+	margin: 10px 0px 8px 30px;
+	display: block;
+	float: left;
+	font-family: "Microsoft Yahei";
+	line-height: 24px;
+	font-size: 20px;
+	font-weight: normal;
+	width: 400px;
+}
+.rankList_html>.rankRight .listInfo>h2{
+	display: block;
+	float: left;
+	margin-left: 50px;
+	font-size: 14px;
+	width: 400px;
+	font-weight: normal;
+	color: #666;
+}
+.rankList_html>.rankRight .listInfo>h2>span:last-child{color: #bebebe;}
+.rankList_html>.rankRight .listInfo>h2>span:last-child:hover{color: #666;cursor: pointer;text-decoration: underline;}
+.rankList_html>.rankRight .listInfo>div:last-child{
+	float: left;
+	margin-left: 50px;
+	margin-top: 30px;
+	height: 60px;
+	width: 400px;
+	box-shadow:0 0 2px 2px #777;
+	font-size: 28px;
+	line-height: 60px;
+	text-align: center;
+}
+.rankList_html>.rankRight .listItems{
+	min-height: 800px;
+	margin: 60px 0px 30px;
+	width: 100%;
+	/*box-shadow:0 0 2px 2px #777;*/
+}
+.rankList_html>.rankRight .listItems>h1{
+	height: 40px;font-weight: normal;
+	border-bottom: 2px solid #c20c0c;
+	position: relative;
+}
+.rankList_html>.rankRight .listItems>h1>span:nth-of-type(1){
+	font-size: 24px;
+}
+.rankList_html>.rankRight .listItems>h1>span:nth-of-type(2){
+	font-size: 14px;
+	margin-left: 30px;color:#666;
+}
+.rankList_html>.rankRight .listItems>h1>span:nth-of-type(3){
+	font-size: 14px;color:#666;
+	position: absolute;
+	top: 50%;right:0;
+	transform: translateY(-50%);
+}
+.rankList_html>.rankRight .listItems>h1>span:nth-of-type(3)>i{
+	color: #c20c0c;font-weight: 600;
+}
+.rankList_html>.rankRight .listItems>table{
+	border-collapse:collapse;
+	border:1px solid #ccc;
+}
+.rankList_html>.rankRight .listItems>table *{
+	box-sizing: border-box;
+}
+.rankList_html>.rankRight .listItems>table tr{
+	font-size: 0;
+}
+.rankList_html>.rankRight .listItems>table tr th,.rankList_html>.rankRight .listItems>table tr td{
+	font-size: 14px;
+	text-align: left;
+	padding-left: 6px;
+	font-weight: normal;
+	color: #666;
+	position: relative;
+}
+.rankList_html>.rankRight .listItems>table tr th{
+	border:1px solid #ccc;
+}
+.rankList_html>.rankRight .listItems>table tr>th:nth-of-type(1){
+	width: 87px;
+}
+.rankList_html>.rankRight .listItems>table tr>th:nth-of-type(2){
+	width: 404px;
+}
+.rankList_html>.rankRight .listItems>table tr>th:nth-of-type(3){
+	width: 94px;
+}
+.rankList_html>.rankRight .listItems>table tr>th:nth-of-type(4){
+	width: 94px;
+	}
+.rankList_html>.rankRight .listItems>table tr{
+	height: 36px;
+}
+.rankList_html>.rankRight .listItems>table>tbody>tr{
+	cursor: pointer;
+}
+.rankList_html>.rankRight .listItems>table>tbody>tr:nth-of-type(odd){
+	background: #f7f7f7;
+}
+.rankList_html>.rankRight .listItems>table>tbody>tr ul{
+	background: white;
+}
+.rankList_html>.rankRight .listItems>table>tbody>tr:nth-of-type(odd) ul{
+	background: #f7f7f7;
+}
+.rankList_html>.rankRight .listItems>table>tbody>tr:nth-of-type(-n+3){
+	height:74px;font-size: 22px;
+}
+.rankList_html>.rankRight .listItems>table>tbody>tr:nth-of-type(-n+3)>td:nth-of-type(2){
+	font-size: 18px !important;
+	color: #c20c0c !important;
+	font-weight: 700 !important;
+}
+.rankList_html>.rankRight .listItems>table>tbody>tr>td:nth-of-type(1){
+	text-indent: 12px;font-size: 12px;
+}
+.rankList_html>.rankRight .listItems>table>tbody>tr>td:nth-of-type(1):hover>i{
+	/*background: url('../images/playLogo_hover.png');*/
+	/*background-size: 100%;*/
+}
+.rankList_html>.rankRight .listItems>table>tbody>tr>td:nth-of-type(1)>i{
+	width: 20px;height: 20px;
+	position: absolute;
+	top: 50%;left: 42px;
+	transform: translateY(-50%);
+	color: #c20c0c;
+/*	background: url('../images/playLogo.png');*/
+	/*background-size: 100%;*/
+}
+.rankList_html>.rankRight .listItems>table>tbody>tr>td:nth-of-type(2){
+	color:black;font-size: 14px;
+}
+.rankList_html>.rankRight .listItems>table>tbody>tr>td:nth-of-type(3)>ul{
+	position: absolute;
+	width: 100%;height: 100%;
+	top: 0;left: 0;
+}
+.rankList_html>.rankRight .listItems>table>tbody>tr>td:nth-of-type(3)>ul>li{
+	width: 14px;height: 100%;
+	display: inline-block;
+	position: relative;
+	margin: 0px 4px;
+}
+.rankList_html>.rankRight .listItems>table>tbody>tr>td:nth-of-type(3)>ul>li>img{
+	position: absolute;
+	width: 100% ;top: 50%;
+	transform: translateY(-50%);
+}
+.rankList_html>.rankRight .listItems>table>tbody>tr>td:nth-of-type(3){
+	font-size: 12px;
+}
+.rankList_html>.rankRight .listItems>table>tbody>tr>td:nth-of-type(4){
+	color:black;font-size: 14px;
+}

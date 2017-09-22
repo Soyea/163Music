@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>注册云音乐账号</title>
+	<!-- 重置样式表 -->
+	<link rel="stylesheet" type="text/css" href="css/public/reset.css">
+	<!-- 主页样式表 -->
+	<link rel="stylesheet" type="text/css" href="css/signUp/signUp.css">
+	<!-- 共用组件样式表 -->
+	<link rel="stylesheet" type="text/css" href="css/public/htmlfooter.css">
+	<!-- 引入cookie工具函数和vue全家桶 -->
+	<script type="text/javascript" src="js/cookieUtil.js"></script>
+	<script type="text/javascript" src='js/vue.js'></script>
+	<script type="text/javascript" src='js/vuex.js'></script>
+	<script type="text/javascript" src='js/vue-resource.js'></script>
+	<!-- 本页面组件 -->
+	<script type="text/javascript" src="components/signUp/signUp.js"></script>
+	<!-- 共用全局组件 -->
+	<script type="text/javascript" src="components/public/htmlfooter.js"></script>
+</head>
+<body>
+	<div id="app">
+		<div class="top_nav">
+			<div class="content">
+				<a hidefocus="true" href="index.html"><img src="images/logo.png" alt=""></a>
+				<span>云音乐注册</span>
+				<strong id="signIn" tag-flag="false">我已注册，现在就</strong>
+				<span><a hidefocus="true" href="loginIn.html">登录</a></span>
+			</div>
+		</div>
+		<div class="content signUp">
+			<signup></signup>
+		</div>
+		<htmlfooter></htmlfooter>
+	</div>
+</body>
+	<template id="signUp">
+		<div>
+			<ul class="signUp_Form">
+				<li v-for="item in fields">
+					<label :for="item.name">{{showProp(item.name)}}</label>
+					<template v-if="item.type=='radio'">
+						<template v-for="opt in item.options">
+							<input type="radio" :name="item.name" :value="opt.value" v-model="signUpData[item.name]">
+							<span v-text="opt.name"></span>
+						</template>
+					</template>
+					<input v-else type="text" :name="item.name" v-model="signUpData[item.name]" :placeholder="'请输入'+showProp(item.name)">
+					<strong v-text="testError[item.name].msg" v-show="testError[item.name].show"></strong>
+				</li>
+				<li class="signUp_rule">
+					<input type="checkbox" v-model="signUpData.isAgree">
+					<span>阅读并接受
+					<a hidefocus="true" href="#">《云音乐用户协议》</a>
+					及
+					<a hidefocus="true" href="#">《云音乐隐私权保护声明》</a>
+					</span>
+					<strong v-text="testError.isAgree.msg" v-show="testError.isAgree.show"></strong>
+				</li>
+				<li><span @click="signUp">注册</span></li>
+			</ul>
+			<div class="signUp_ad" v-show="isShowAd"><span @click="closeAD">×</span><img :src="adUrl" alt="广告"></div>
+		</div>
+	</template>
+	<template id="htm_footer">
+		<div class="htm_footer">
+			<div class="footer_content">
+				<h2>
+					<a v-for="aText in footA" hidefocus="true" href="#" v-text="aText"></a>
+				</h2>
+				<h3 v-text="footContent"></h3>
+			</div>
+		</div>
+	</template>
+<script type="text/javascript">
+	var vm=new Vue({
+		el:'#app',
+		components:{signup:signUp},
+	})
+</script>
+</html>
